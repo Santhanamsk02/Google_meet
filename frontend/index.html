@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join or Create Meeting</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="join-container">
+        <h2>Create or Join a Meeting</h2>
+        <input type="text" id="userName" placeholder="Enter Your Name">
+        <input type="text" id="roomId" placeholder="Enter Room Code">
+        <button onclick="createRoom()">Create Room</button>
+        <button onclick="joinRoom()">Join Room</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+    <script>
+        const socket = io("http://localhost:5000");
+
+        function createRoom() {
+            const roomId = document.getElementById("roomId").value.trim();
+            if (!roomId) return alert("Enter a Room Code to Create!");
+
+            socket.emit("create-room", roomId);
+        }
+
+        socket.on("room-created", (roomId) => {
+            alert("Room created successfully!");
+        });
+
+        socket.on("room-exists", () => {
+            alert("Room code already exists, try another!");
+        });
+
+        function joinRoom() {
+            const userName = document.getElementById("userName").value.trim();
+            const roomId = document.getElementById("roomId").value.trim();
+
+            if (!userName || !roomId) {
+                alert("Enter both Name and Room Code!");
+                return;
+            }
+
+            socket.emit("join-room", roomId, "user-" + Math.random().toString(36).substr(2, 9), userName);
+        }
+
+        socket.on("room-not-found", () => {
+            alert("Room code not found. Please check and try again!");
+        });
+
+        socket.on("room-joined", (roomId) => {
+            const userName = document.getElementById("userName").value.trim();
+            window.location.href = `room.html?roomId=${roomId}&userName=${userName}`;
+        });
+    </script>
+</body>
+</html>
