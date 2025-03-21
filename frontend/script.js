@@ -1,4 +1,4 @@
-const socket = io("http://localhost:5000");
+const socket = io("https://google-meet-inr1.onrender.com");
 const videoGrid = document.getElementById("videoGrid");
 const userNames = {};
 

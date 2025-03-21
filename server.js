@@ -8,7 +8,12 @@ const app = express();
 app.use(cors());
 
 // Serve the "frontend" folder as static files
-app.use(express.static(path.join(__dirname, "frontend")));
+app.use("/frontend", express.static(path.join(__dirname, "frontend")));
+
+app.get("/frontend/style.css", (req, res) => {
+    res.type("text/css");
+    res.sendFile(path.join(__dirname, "frontend/style.css"));
+});
 
 // Serve the root "index.html" file
 app.get("/", (req, res) => {
