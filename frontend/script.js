@@ -6,7 +6,11 @@ const urlParams = new URLSearchParams(window.location.search);
 const roomId = urlParams.get("roomId");
 const userName = urlParams.get("userName");
 
-const peer = new Peer();
+const peer = new Peer(undefined, {
+    host: "peerjs-server.herokuapp.com",
+    port: 443,
+    secure: true
+});
 const peers = {};
 let myVideo = document.createElement("video");
 myVideo.muted = true;
