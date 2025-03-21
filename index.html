@@ -52,7 +52,7 @@
 
         socket.on("room-joined", (roomId) => {
             const userName = document.getElementById("userName").value.trim();
-            window.location.href = `room.html?roomId=${roomId}&userName=${userName}`;
+            window.location.href = `frontend/room.html?roomId=${roomId}&userName=${userName}`;
         });
     </script>
 </body>
